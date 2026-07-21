@@ -68,7 +68,7 @@ export type Experience = {
 
 export const site = {
   /** Used for absolute Open Graph URLs. Update after your first deploy. */
-  url: "https://alexisbazire.vercel.app",
+  url: "https://alexis-portfolio-sand.vercel.app",
   title: "Alexis Bazire — Product, Digital Projects & AI",
   description:
     "Alexis Bazire combines product thinking, project coordination, marketing and artificial intelligence to design, structure and develop practical solutions. Open to opportunities in Paris.",
