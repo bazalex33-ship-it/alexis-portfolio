@@ -1,6 +1,7 @@
 import type { Project } from "@/data/portfolio";
 import { projects, work } from "@/data/portfolio";
 import { ProjectImage } from "./ProjectImage";
+import { SpotmeDemo } from "./spotme/SpotmeDemo";
 import { Reveal } from "./ui/Reveal";
 import { SectionHeading } from "./ui/SectionHeading";
 
@@ -111,7 +112,13 @@ function FeaturedProject({ project }: { project: Project }) {
         </dl>
       </Reveal>
 
-      {project.images.length > 0 ? (
+      {project.demo === "spotme" ? (
+        <Reveal delay={180}>
+          <div className="mt-10">
+            <SpotmeDemo />
+          </div>
+        </Reveal>
+      ) : project.images.length > 0 ? (
         <Reveal delay={180}>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {project.images.map((image, index) => (

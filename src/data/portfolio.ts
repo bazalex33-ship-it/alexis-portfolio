@@ -50,6 +50,11 @@ export type Project = {
   tagsLabel: string;
   tags: string[];
   images: ProjectImage[];
+  /**
+   * Renders the interactive SpotMe demo in place of the image slots.
+   * Remove this line and fill `images` to show screenshots instead.
+   */
+  demo?: "spotme";
   /** Optional closing note (confidentiality, launch status…). */
   note?: string;
   /** The first project is rendered as the main, most prominent case study. */
@@ -169,23 +174,10 @@ export const projects: Project[] = [
       "Vercel",
       "Generative AI",
     ],
-    images: [
-      {
-        src: "/projects/spotme-01.webp",
-        alt: "SpotMe interface: profile discovery screen.",
-        caption: "Discovery",
-      },
-      {
-        src: "/projects/spotme-02.webp",
-        alt: "SpotMe interface: user interaction screen.",
-        caption: "Interaction",
-      },
-      {
-        src: "/projects/spotme-03.webp",
-        alt: "SpotMe interface: community engagement screen.",
-        caption: "Engagement",
-      },
-    ],
+    // The interactive demo replaces the screenshot slots. To go back to images,
+    // delete `demo` below and add entries to this array (see README).
+    images: [],
+    demo: "spotme",
     note: "SpotMe is currently in active development and has not yet been publicly launched. Selected screens and product elements may be intentionally withheld until launch.",
     featured: true,
   },
@@ -250,6 +242,94 @@ export const projects: Project[] = [
     images: [],
   },
 ];
+
+/**
+ * ---------------------------------------------------------------------------
+ * INTERACTIVE SPOTME DEMO
+ * ---------------------------------------------------------------------------
+ * Text for the two frames shown inside the SpotMe case study: the product
+ * guide (left) and the playable profile grid (right).
+ *
+ * Nothing here is connected to the real SpotMe app: no account, no server,
+ * no data is sent or stored. It is a stylised reproduction built for the
+ * portfolio, with invented users.
+ * ---------------------------------------------------------------------------
+ */
+export const spotmeDemo = {
+  eyebrow: "Interactive demo",
+  title: "A social network where your image is not yours.",
+  intro:
+    "On SpotMe, a profile is not a page you control — it is a grid anyone can write on. Read the guide new users get, then place a few spots yourself.",
+  disclaimer:
+    "Simplified reproduction built for this portfolio. The other users are simulated, and nothing is saved or shared: everything resets when the page reloads.",
+
+  /**
+   * Written for a recruiter, not for a future user: each step pairs a product
+   * decision with the reasoning behind it. Deliberately describes the tensions
+   * that were arbitrated rather than the exact mechanics, which stay unreleased.
+   */
+  guide: {
+    heading: "Product decisions",
+    subheading: "Four choices that shaped the product, and why.",
+    nextLabel: "Next",
+    restartLabel: "Start over",
+    stepLabel: "Step",
+    steps: [
+      {
+        label: "01 — The concept",
+        title: "A profile nobody fully controls",
+        description:
+          "Most social products let you curate a flawless page. Here your profile is a surface other people write on. Giving up that control is the point: it turns a profile into a conversation instead of a showcase.",
+        visual: "concept" as const,
+      },
+      {
+        label: "02 — The constraint",
+        title: "Scarcity is what makes it matter",
+        description:
+          "Contributing is deliberately limited. If anyone could fill a profile at will, grids would become noise and nothing left there would carry weight. Rationing forces a choice: where, and on whom.",
+        visual: "scarcity" as const,
+      },
+      {
+        label: "03 — The rule",
+        title: "Nothing placed is permanent",
+        description:
+          "A newer spot covers an older one. It keeps profiles alive rather than archived, and makes presence something you maintain instead of something you own. Try it on the grid.",
+        visual: "overwrite" as const,
+      },
+      {
+        label: "04 — Where it stands",
+        title: "Designed, built, not yet launched",
+        description:
+          "The product is in active development. What you see here is a simplified reproduction — the full interface and its social mechanics stay withheld until launch.",
+        visual: "status" as const,
+      },
+    ],
+  },
+
+  grid: {
+    heading: "A profile grid",
+    subheading: "Someone else's profile — and they are on it right now.",
+    /** How many spots the visitor can place in total. */
+    budget: 12,
+    budgetLabel: "spots left",
+    liveLabel: "live",
+    colourLabel: "Colour",
+    textLabel: "Write",
+    textPlaceholder: "4 max",
+    drawLabel: "Draw",
+    drawingHeading: "Draw your spot",
+    clearLabel: "Clear",
+    cancelLabel: "Cancel",
+    placeLabel: "Place spot",
+    resetLabel: "Reset",
+    hint: "Pick a spot on the grid, then leave a colour, a word or a drawing.",
+    rule: "Last placement wins: your spot replaces whatever was there before.",
+    emptyState: "Select a spot on the grid first.",
+    noBudget: "No spots left. Reset the grid to try again.",
+    keyboardHint:
+      "Keyboard: arrow keys to move between spots, Space to select one, then use the controls below. Drawing requires a pointer.",
+  },
+};
 
 export const about = {
   eyebrow: "About",
