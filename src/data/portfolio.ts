@@ -87,6 +87,15 @@ export const personal = {
   email: "bazalex33@gmail.com",
   linkedin: "https://www.linkedin.com/in/alexis-bazire-off/",
   /**
+   * Portrait shown in the About section.
+   * Set `src` to "" to hide the photo everywhere — the layout adapts on its own.
+   * Replace the file in /public and keep a portrait 4:5 ratio, ~1100 px wide.
+   */
+  photo: {
+    src: "/alexis-bazire.jpg",
+    alt: "Portrait of Alexis Bazire.",
+  },
+  /**
    * Leave empty ("") until the CV is available.
    * When empty, all "Download CV" buttons are hidden automatically.
    * Example once ready: "/alexis-bazire-cv.pdf" (file placed in /public).

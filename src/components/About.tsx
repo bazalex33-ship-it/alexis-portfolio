@@ -1,7 +1,11 @@
-import { about } from "@/data/portfolio";
+import Image from "next/image";
+import { about, personal } from "@/data/portfolio";
 import { Reveal } from "./ui/Reveal";
 
 export function About() {
+  // The portrait disappears cleanly if `personal.photo.src` is emptied.
+  const hasPhoto = personal.photo.src.trim().length > 0;
+
   return (
     <section
       id="about"
@@ -21,6 +25,20 @@ export function About() {
               {about.title}
             </h2>
           </Reveal>
+
+          {hasPhoto ? (
+            <Reveal delay={140}>
+              <div className="relative mt-10 aspect-[4/5] w-full max-w-[19rem] overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface-muted)] shadow-[var(--shadow-soft)]">
+                <Image
+                  src={personal.photo.src}
+                  alt={personal.photo.alt}
+                  fill
+                  sizes="(min-width: 1024px) 19rem, (min-width: 640px) 50vw, 90vw"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
+          ) : null}
         </div>
 
         <div>
