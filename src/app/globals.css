@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   THEME
+   All colours live here. Change a value once and it updates the whole site.
+   --------------------------------------------------------------------------- */
+:root {
+  --background: #f8f8f5; /* off-white page background */
+  --surface: #ffffff; /* cards, elevated blocks */
+  --surface-muted: #f2f2ee; /* placeholders, subtle fills */
+  --foreground: #14181f; /* charcoal / dark navy text */
+  --muted: #5c6472; /* secondary text */
+  --subtle: #8a91a0; /* tertiary text, labels */
+  --line: #e2e2dc; /* borders and rules */
+  --line-strong: #cfcfc7;
+  --accent: #1f45c8; /* the single refined blue */
+  --accent-hover: #17359b;
+  --accent-soft: rgba(31, 69, 200, 0.08);
+  --accent-ring: rgba(31, 69, 200, 0.35);
+
+  --shadow-soft: 0 1px 2px rgba(20, 24, 31, 0.04),
+    0 8px 24px -12px rgba(20, 24, 31, 0.12);
+  --shadow-lift: 0 2px 4px rgba(20, 24, 31, 0.05),
+    0 20px 40px -20px rgba(20, 24, 31, 0.18);
+
+  --max-width: 76rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored sections clear of the sticky header. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    /* No horizontal scrolling, ever. */
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: #fff;
+  }
+
+  /* Visible, consistent focus states for keyboard users. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Small uppercase label used above section titles. */
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--subtle);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   MOTION
+   Reveal animations are opt-in via [data-reveal] and fully disabled for
+   users who prefer reduced motion.
+   --------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -2%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.hero-aurora {
+  animation: hero-drift 26s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
