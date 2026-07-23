@@ -178,9 +178,10 @@ export const projects: Project[] = [
     status: "Social application currently in active development",
     summary:
       "SpotMe is a social application focused on profile discovery, user interaction and community engagement. I have led the project from its initial concept, combining product strategy, user experience design, project management and AI-assisted development.",
+    // The summary above already covers how the project was led — no need to
+    // say it twice.
     context: [
       "SpotMe explores new ways for users to discover profiles, interact and engage within a digital community.",
-      "I have led the project from its initial concept, combining product strategy, user experience design, project management and AI-assisted development.",
     ],
     contributions: [
       "Defined the product vision, core concept and development roadmap.",
@@ -211,7 +212,7 @@ export const projects: Project[] = [
     id: "hospitality",
     index: "02",
     name: "High-end Hospitality & Wellness Development Project",
-    role: "Strategic Development Officer",
+    role: "Strategic Development & Partner Outreach",
     period: "May 2025 – Present",
     location: "Saint-Martin",
     status: "International project currently in development",
@@ -226,6 +227,7 @@ export const projects: Project[] = [
       "Supported communication between the project's different contributors.",
       "Participated in strategic discussions and international partner relations.",
       "Helped structure the information and materials required for project development.",
+      "Identified potential investors, hotel operators and strategic partners, prepared opportunity materials and facilitated introductions with the property owner.",
     ],
     tagsLabel: "Skills used",
     tags: [
@@ -275,9 +277,12 @@ export const projects: Project[] = [
         status: "current",
       },
       {
-        label: "What comes next",
-        role: "Not yet defined",
-        description: "Longer-term involvement remains open as the project advances.",
+        label: "Potential future involvement",
+        // No role tag here: nothing is confirmed, and inventing one would
+        // read as a claim.
+        role: "",
+        description:
+          "Longer-term involvement may be considered as the project advances.",
         status: "ahead",
       },
     ],
@@ -328,7 +333,7 @@ export const projects: Project[] = [
  */
 export const spotmeDemo = {
   eyebrow: "Interactive demo",
-  title: "A social network where your image is not yours.",
+  title: "A social network where your profile is shaped by others.",
   intro:
     "On SpotMe, a profile is not a page you control — it is a grid anyone can write on. Read the guide new users get, then place a few spots yourself.",
   disclaimer:
@@ -495,11 +500,13 @@ export const skills = {
 export const awareness = {
   eyebrow: "Perspective",
   title: "Business & Market Awareness",
-  text: "I maintain an active interest in financial markets, business models and major geopolitical developments. This broader perspective helps me assess budgets, understand economic constraints, anticipate external risks and make more informed decisions when developing projects.",
+  // Worded as perspective, not expertise: nothing here should read as a claim
+  // to run financial analysis or own budget decisions.
+  text: "I maintain an active interest in financial markets, business models and major geopolitical developments. This broader perspective helps me consider budget constraints, understand the economic environment and account for external risks when developing projects.",
   areas: [
     "Financial literacy",
     "Budget awareness",
-    "Market analysis",
+    "Economic & market awareness",
     "Geopolitical monitoring",
     "Business model understanding",
   ],

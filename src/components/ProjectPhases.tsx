@@ -64,9 +64,12 @@ export function ProjectPhases({
                 >
                   {phase.label}
                 </p>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.1em] text-[var(--subtle)]">
-                  {phase.role}
-                </p>
+                {/* Omitted when nothing is confirmed for that phase. */}
+                {phase.role ? (
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.1em] text-[var(--subtle)]">
+                    {phase.role}
+                  </p>
+                ) : null}
                 <p className="mt-2 text-xs leading-relaxed text-[var(--muted)]">
                   {phase.description}
                 </p>
