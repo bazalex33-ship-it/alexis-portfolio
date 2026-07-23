@@ -73,12 +73,29 @@ function Contributions({ items }: { items: string[] }) {
 }
 
 /** The featured case study — full width, images, more room to breathe. */
-function FeaturedProject({ project }: { project: Project }) {
+/**
+ * How much visual weight a project block carries.
+ *  - "cards"     → every project sits on its own white card
+ *  - "editorial" → no cards at all, blocks separated by a hairline
+ */
+export type ProjectVariant = "cards" | "editorial";
+
+const CARD =
+  "rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-soft)] sm:p-10 lg:p-14";
+const EDITORIAL = "border-t border-[var(--line)] pt-10";
+
+function FeaturedProject({
+  project,
+  variant,
+}: {
+  project: Project;
+  variant: ProjectVariant;
+}) {
   return (
     <article
       id={`project-${project.id}`}
       aria-labelledby={`project-${project.id}-title`}
-      className="scroll-mt-28 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-soft)] sm:p-10 lg:p-14"
+      className={`scroll-mt-28 ${variant === "cards" ? CARD : EDITORIAL}`}
     >
       <Reveal>
         <div className="flex flex-wrap items-center gap-4">
@@ -163,11 +180,17 @@ function FeaturedProject({ project }: { project: Project }) {
 }
 
 /** Secondary case studies — compact, two-column, no images. */
-function CompactProject({ project }: { project: Project }) {
+function CompactProject({
+  project,
+  variant,
+}: {
+  project: Project;
+  variant: ProjectVariant;
+}) {
   return (
     <Reveal
       as="article"
-      className="scroll-mt-28 border-t border-[var(--line)] pt-10"
+      className={`scroll-mt-28 ${variant === "cards" ? CARD : EDITORIAL}`}
     >
       <div
         id={`project-${project.id}`}
@@ -219,7 +242,11 @@ function CompactProject({ project }: { project: Project }) {
   );
 }
 
-export function ProjectSection() {
+export function ProjectSection({
+  variant = "cards",
+}: {
+  variant?: ProjectVariant;
+}) {
   const [featured, ...rest] = projects;
 
   return (
@@ -237,9 +264,11 @@ export function ProjectSection() {
         />
 
         <div className="mt-16 space-y-16 lg:mt-20">
-          {featured ? <FeaturedProject project={featured} /> : null}
+          {featured ? (
+            <FeaturedProject project={featured} variant={variant} />
+          ) : null}
           {rest.map((project) => (
-            <CompactProject key={project.id} project={project} />
+            <CompactProject key={project.id} project={project} variant={variant} />
           ))}
         </div>
       </div>

@@ -262,6 +262,10 @@ export const spotmeDemo = {
     "On SpotMe, a profile is not a page you control — it is a grid anyone can write on. Read the guide new users get, then place a few spots yourself.",
   disclaimer:
     "Simplified reproduction built for this portfolio. The other users are simulated, and nothing is saved or shared: everything resets when the page reloads.",
+  /** The grid opens on demand, so the case study stays compact by default. */
+  tryLabel: "Try the mechanic",
+  tryHint: "Interactive · opens in place",
+  closeLabel: "Close",
 
   /**
    * Written for a recruiter, not for a future user: each step pairs a product

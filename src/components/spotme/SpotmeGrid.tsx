@@ -72,7 +72,13 @@ const BOT_CONTENT: SpotContent[] = [
   { kind: "colour" },
 ];
 
-type Cursor = { userId: string; colour: string; x: number; y: number };
+type Cursor = {
+  userId: string;
+  colour: string;
+  x: number;
+  y: number;
+  name: string;
+};
 
 export function SpotmeGrid() {
   const copy = spotmeDemo.grid;
@@ -88,7 +94,6 @@ export function SpotmeGrid() {
   const [cursor, setCursor] = useState<Cursor | null>(null);
   const [live, setLive] = useState(false);
 
-  const rootRef = useRef<HTMLElement>(null);
   const cellRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const remaining = copy.budget - spent;
@@ -134,28 +139,33 @@ export function SpotmeGrid() {
   }, []);
 
   /**
-   * Simulated activity. Deliberately conservative: it only runs while the grid
-   * is on screen, pauses when the tab is hidden, and never starts at all for
-   * visitors who asked for reduced motion. The pace is slow on purpose — this
-   * sits inside a portfolio, it must not compete with the text around it.
+   * Simulated activity.
+   *
+   * The grid is only mounted once the visitor has opened it, so this simply
+   * runs for as long as it exists — no visibility test to get wrong. It still
+   * pauses when the tab is hidden, and never starts at all for visitors who
+   * asked for reduced motion.
    */
   useEffect(() => {
-    const node = rootRef.current;
-    if (!node) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let visible = false;
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const schedule = (fn: () => void, delay: number) => {
+      clearTimeout(timer);
       timer = setTimeout(() => {
         if (!cancelled) fn();
       }, delay);
     };
 
     const step = () => {
-      if (cancelled || !visible || document.hidden) return;
+      if (cancelled) return;
+      if (document.hidden) {
+        // Try again shortly rather than stalling for good.
+        schedule(step, 1500);
+        return;
+      }
 
       const user = LIVE_USERS[randomInt(LIVE_USERS.length)];
       const content = BOT_CONTENT[randomInt(BOT_CONTENT.length)];
@@ -163,7 +173,7 @@ export function SpotmeGrid() {
       const y = randomInt(ROWS);
 
       // 1. The cursor glides to the spot they are about to take.
-      setCursor({ userId: user.id, colour: user.colour, x, y });
+      setCursor({ userId: user.id, colour: user.colour, x, y, name: user.name });
 
       // 2. On arrival, their spot replaces whatever was there.
       schedule(() => {
@@ -177,40 +187,23 @@ export function SpotmeGrid() {
           },
         }));
 
-        // 3. Long pause, then someone else takes a turn.
+        // 3. Pause, then someone else takes a turn.
         schedule(() => {
           setCursor(null);
-          schedule(step, 4000 + randomInt(5000));
-        }, 900);
+          schedule(step, 3200 + randomInt(3600));
+        }, 1000);
       }, 900);
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const wasVisible = visible;
-        visible = entry.isIntersecting;
-        setLive(entry.isIntersecting);
-        if (visible && !wasVisible) schedule(step, 1500);
-      },
-      { threshold: 0.2 },
-    );
-    observer.observe(node);
-
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        clearTimeout(timer);
-        setCursor(null);
-      } else if (visible) {
-        schedule(step, 2000);
-      }
-    };
-    document.addEventListener("visibilitychange", onVisibilityChange);
+    // Short enough that the first placement is seen, not missed.
+    schedule(() => {
+      setLive(true);
+      step();
+    }, 1100);
 
     return () => {
       cancelled = true;
       clearTimeout(timer);
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
@@ -241,7 +234,6 @@ export function SpotmeGrid() {
 
   return (
     <section
-      ref={rootRef}
       aria-label={copy.heading}
       className="flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6"
     >
@@ -287,7 +279,14 @@ export function SpotmeGrid() {
               className="h-1.5 w-1.5 rounded-full transition-colors duration-300"
               style={{ background: live ? SPOT_COLOURS.green : "var(--line-strong)" }}
             />
-            {copy.liveLabel}
+            {/* Naming who is acting makes the simulated activity unmistakable. */}
+            {cursor ? (
+              <span style={{ color: cursor.colour }}>
+                {cursor.name} is placing…
+              </span>
+            ) : (
+              copy.liveLabel
+            )}
           </span>
         </div>
       </div>
@@ -352,6 +351,19 @@ export function SpotmeGrid() {
 
           {/* Someone else's cursor gliding to their next spot. */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            {/* Halo marking the target, so the arrival is impossible to miss. */}
+            <span
+              className="absolute block rounded-full transition-all duration-[900ms] ease-out"
+              style={{
+                left: `${(((cursor?.x ?? 0) + 0.5) / COLS) * 100}%`,
+                top: `${(((cursor?.y ?? 0) + 0.5) / ROWS) * 100}%`,
+                height: 30,
+                width: 30,
+                background: cursor?.colour ?? "transparent",
+                opacity: cursor ? 0.22 : 0,
+                transform: "translate(-50%, -50%)",
+              }}
+            />
             <span
               className="absolute block h-3 w-3 rounded-full ring-2 ring-[var(--surface)] transition-all duration-[900ms] ease-out"
               style={{
