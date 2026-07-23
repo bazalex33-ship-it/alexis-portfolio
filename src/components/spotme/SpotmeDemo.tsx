@@ -63,7 +63,7 @@ export function SpotmeDemo() {
   }, [open, close]);
 
   return (
-    <div className="rounded-2xl border border-[var(--line)] bg-[var(--background)] p-5 sm:p-6 lg:p-8">
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--background)] p-4 sm:p-6 lg:p-8">
       <div className="max-w-2xl">
         <p className="eyebrow">{spotmeDemo.eyebrow}</p>
         <h3 className="mt-3 font-[family-name:var(--font-display)] text-2xl leading-tight text-[var(--foreground)] sm:text-3xl">

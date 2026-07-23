@@ -50,6 +50,13 @@
     /* Keeps anchored sections clear of the sticky header. */
     scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
+    /*
+     * Safety net against sideways scrolling on small screens. `clip` rather
+     * than `hidden`: it never creates a scroll container, so the sticky header
+     * keeps working. This is a backstop, not a fix — anything that overflows
+     * should still be sized properly.
+     */
+    overflow-x: clip;
   }
 
   body {
@@ -58,8 +65,7 @@
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
-    /* No horizontal scrolling, ever. */
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   ::selection {

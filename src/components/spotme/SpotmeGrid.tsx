@@ -235,7 +235,7 @@ export function SpotmeGrid() {
   return (
     <section
       aria-label={copy.heading}
-      className="flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6"
+      className="flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6"
     >
       <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h4 className="text-sm font-semibold text-[var(--foreground)]">

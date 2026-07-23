@@ -32,13 +32,13 @@ function ConceptVisual() {
         {caption}
       </span>
       <div
-        className="grid gap-[3px] rounded-lg border border-[var(--line)] bg-[var(--surface)] p-2"
+        className="grid gap-[2px] rounded-lg border border-[var(--line)] bg-[var(--surface)] p-1.5 sm:gap-[3px] sm:p-2"
         style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
       >
         {Array.from({ length: 24 }, (_, i) => (
           <div
             key={i}
-            className="h-[15px] w-[15px] rounded-[3px]"
+            className="h-[11px] w-[11px] rounded-[3px] sm:h-[15px] sm:w-[15px]"
             style={{ background: cells(i) ?? "var(--surface-muted)" }}
           />
         ))}
@@ -47,9 +47,13 @@ function ConceptVisual() {
   );
 
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-2 sm:gap-4">
       {frame(() => undefined, "Profile")}
-      <svg viewBox="0 0 16 16" aria-hidden="true" className="h-3.5 w-3.5 text-[var(--subtle)]">
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        className="h-3.5 w-3.5 shrink-0 text-[var(--subtle)]"
+      >
         <path
           d="M3 8h10M9 4l4 4-4 4"
           stroke="currentColor"
@@ -113,7 +117,7 @@ function OverwriteVisual() {
         {caption}
       </span>
       <div
-        className="grid gap-[3px] rounded-lg border border-[var(--line)] bg-[var(--surface)] p-2"
+        className="grid gap-[2px] rounded-lg border border-[var(--line)] bg-[var(--surface)] p-1.5 sm:gap-[3px] sm:p-2"
         style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
       >
         {Array.from({ length: 16 }, (_, i) => {
@@ -123,7 +127,7 @@ function OverwriteVisual() {
           return (
             <div
               key={i}
-              className="h-[17px] w-[17px] rounded-[3px] transition-colors"
+              className="h-[14px] w-[14px] rounded-[3px] transition-colors sm:h-[17px] sm:w-[17px]"
               style={{
                 background: map[i] ?? "var(--surface-muted)",
                 boxShadow:
@@ -139,9 +143,13 @@ function OverwriteVisual() {
   );
 
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-2 sm:gap-4">
       {frame(false, "Before")}
-      <svg viewBox="0 0 16 16" aria-hidden="true" className="h-3.5 w-3.5 text-[var(--subtle)]">
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        className="h-3.5 w-3.5 shrink-0 text-[var(--subtle)]"
+      >
         <path
           d="M3 8h10M9 4l4 4-4 4"
           stroke="currentColor"
@@ -208,7 +216,7 @@ export function SpotmeGuide() {
   return (
     <section
       aria-label={guide.heading}
-      className="flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6"
+      className="flex h-full flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6"
     >
       <header className="flex items-baseline justify-between gap-4">
         <h4 className="text-sm font-semibold text-[var(--foreground)]">

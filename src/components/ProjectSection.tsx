@@ -82,7 +82,7 @@ function Contributions({ items }: { items: string[] }) {
 export type ProjectVariant = "cards" | "editorial";
 
 const CARD =
-  "rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-soft)] sm:p-10 lg:p-14";
+  "rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)] sm:p-10 lg:p-14";
 const EDITORIAL = "border-t border-[var(--line)] pt-10";
 
 function FeaturedProject({
