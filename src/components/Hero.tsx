@@ -1,9 +1,10 @@
-import { hero, personal } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { HeroBackdrop } from "./HeroBackdrop";
 import { ArrowIcon, ButtonLink } from "./ui/Button";
 import { Reveal } from "./ui/Reveal";
 
-export function Hero() {
+export function Hero({ c }: { c: Content }) {
+  const { hero, personal } = c;
   return (
     <section
       id="top"
@@ -79,7 +80,7 @@ export function Hero() {
         </Reveal>
 
         <p className="sr-only">
-          {personal.name} — {personal.title}. {personal.availability}.
+          {personal.name}. {personal.title}. {personal.availability}.
         </p>
       </div>
     </section>

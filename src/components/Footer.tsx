@@ -1,6 +1,7 @@
-import { footer, navigation, personal } from "@/data/portfolio";
+import type { Content } from "@/data";
 
-export function Footer() {
+export function Footer({ c }: { c: Content }) {
+  const { footer, navigation, personal } = c;
   const year = new Date().getFullYear();
   const hasCv = personal.cvUrl.trim().length > 0;
 
@@ -55,7 +56,7 @@ export function Footer() {
 
       <div className="container-page mt-10 border-t border-[var(--line)] pt-6">
         <p className="text-xs text-[var(--subtle)]">
-          © {year} {personal.name}. All rights reserved.
+          © {year} {personal.name}. {footer.rights}
         </p>
       </div>
     </footer>

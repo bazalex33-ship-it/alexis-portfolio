@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type { ProjectImage as ProjectImageType } from "@/data/portfolio";
+import type { ProjectImage as ProjectImageType } from "@/data";
 
 /**
  * Renders a project image, or a clean typographic placeholder when the file

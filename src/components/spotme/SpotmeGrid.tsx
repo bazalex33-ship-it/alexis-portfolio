@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { spotmeDemo } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { DrawingPad } from "./DrawingPad";
 import { PICKABLE_COLOURS, SPOT_COLOURS } from "./palette";
 import { SpotVisual, describeContent, type Glyph, type SpotContent } from "./SpotContent";
@@ -80,8 +80,8 @@ type Cursor = {
   name: string;
 };
 
-export function SpotmeGrid() {
-  const copy = spotmeDemo.grid;
+export function SpotmeGrid({ c }: { c: Content }) {
+  const copy = c.spotmeDemo.grid;
 
   const [board, setBoard] = useState<Board>(SEED);
   const [selected, setSelected] = useState<string | null>(null);
@@ -123,7 +123,7 @@ export function SpotmeGrid() {
       setText("");
       setDrawing(false);
       setStatus(
-        `Spot placed with ${describeContent(content)}. ${remaining - 1} ${copy.budgetLabel}.`,
+        `Spot placed with ${describeContent(content, copy.contentNames)}. ${remaining - 1} ${copy.budgetLabel}.`,
       );
     },
     [selected, remaining, colour, copy],
@@ -282,7 +282,7 @@ export function SpotmeGrid() {
             {/* Naming who is acting makes the simulated activity unmistakable. */}
             {cursor ? (
               <span style={{ color: cursor.colour }}>
-                {cursor.name} is placing…
+                {cursor.name} {copy.placingLabel}
               </span>
             ) : (
               copy.liveLabel
@@ -320,7 +320,7 @@ export function SpotmeGrid() {
                       aria-selected={isSelected}
                       aria-label={
                         spot
-                          ? `Spot ${x + 1}, ${y + 1}: ${describeContent(spot.content)} by ${spot.author}`
+                          ? `Spot ${x + 1}, ${y + 1}: ${describeContent(spot.content, copy.contentNames)} by ${spot.author}`
                           : `Spot ${x + 1}, ${y + 1}, empty`
                       }
                       tabIndex={isFocus ? 0 : -1}
@@ -379,6 +379,7 @@ export function SpotmeGrid() {
           {/* Drawing sits over the grid so nothing below it shifts. */}
           {drawing ? (
             <DrawingPad
+              copy={copy}
               colour={colour}
               onCancel={() => setDrawing(false)}
               onConfirm={(strokes) => commit({ kind: "drawing", strokes })}

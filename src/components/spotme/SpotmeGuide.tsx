@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { spotmeDemo } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { SPOT_COLOURS } from "./palette";
 
 /**
@@ -12,8 +12,10 @@ import { SPOT_COLOURS } from "./palette";
 
 const C = SPOT_COLOURS;
 
+type Labels = Content["spotmeDemo"]["guide"]["visuals"];
+
 /** Step 01 — an empty grid becomes a filled one. */
-function ConceptVisual() {
+function ConceptVisual({ v }: { v: Labels }) {
   const filled: Record<number, string> = {
     0: C.violet,
     1: C.violet,
@@ -48,7 +50,7 @@ function ConceptVisual() {
 
   return (
     <div className="flex items-center justify-center gap-2 sm:gap-4">
-      {frame(() => undefined, "Profile")}
+      {frame(() => undefined, v.profile)}
       <svg
         viewBox="0 0 16 16"
         aria-hidden="true"
@@ -63,13 +65,13 @@ function ConceptVisual() {
           strokeLinejoin="round"
         />
       </svg>
-      {frame((i) => filled[i], "After")}
+      {frame((i) => filled[i], v.after)}
     </div>
   );
 }
 
 /** Step 02 — a limited allowance, mostly spent. */
-function ScarcityVisual() {
+function ScarcityVisual({ v }: { v: Labels }) {
   const spent = 5;
 
   return (
@@ -86,7 +88,7 @@ function ScarcityVisual() {
         ))}
       </div>
       <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--subtle)]">
-        limited · refills slowly
+        {v.scarcity}
       </p>
       <div className="grid gap-[3px]" style={{ gridTemplateColumns: "repeat(6, 1fr)" }}>
         {Array.from({ length: 18 }, (_, i) => (
@@ -110,7 +112,7 @@ function ScarcityVisual() {
 }
 
 /** Step 03 — a newer spot replacing an older one. */
-function OverwriteVisual() {
+function OverwriteVisual({ v }: { v: Labels }) {
   const frame = (highlight: boolean, caption: string) => (
     <div className="flex flex-col items-center gap-2">
       <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--subtle)]">
@@ -144,7 +146,7 @@ function OverwriteVisual() {
 
   return (
     <div className="flex items-center justify-center gap-2 sm:gap-4">
-      {frame(false, "Before")}
+      {frame(false, v.before)}
       <svg
         viewBox="0 0 16 16"
         aria-hidden="true"
@@ -159,18 +161,17 @@ function OverwriteVisual() {
           strokeLinejoin="round"
         />
       </svg>
-      {frame(true, "After")}
+      {frame(true, v.after)}
     </div>
   );
 }
 
 /** Step 04 — honest project status. */
-function StatusVisual() {
-  const milestones = [
-    { label: "Concept & product design", done: true },
-    { label: "Build & iteration", done: true },
-    { label: "Public launch", done: false },
-  ];
+function StatusVisual({ v }: { v: Labels }) {
+  const milestones = v.milestones.map((label, index) => ({
+    label,
+    done: index < v.milestones.length - 1,
+  }));
 
   return (
     <ol className="flex w-full max-w-[230px] flex-col gap-3">
@@ -205,8 +206,8 @@ const VISUALS = {
   status: StatusVisual,
 };
 
-export function SpotmeGuide() {
-  const { guide } = spotmeDemo;
+export function SpotmeGuide({ c }: { c: Content }) {
+  const { guide } = c.spotmeDemo;
   const [step, setStep] = useState(0);
 
   const current = guide.steps[step];
@@ -231,7 +232,7 @@ export function SpotmeGuide() {
       {/* Visual area — fixed height so the card never jumps between steps. */}
       <div className="mt-5 flex h-[180px] items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--background)] px-4">
         <div key={step} className="animate-[fadeIn_240ms_ease-out]">
-          <Visual />
+          <Visual v={guide.visuals} />
         </div>
       </div>
 

@@ -1,8 +1,9 @@
-import { experience } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { Reveal } from "./ui/Reveal";
 import { SectionHeading } from "./ui/SectionHeading";
 
-export function ExperienceTimeline() {
+export function ExperienceTimeline({ c }: { c: Content }) {
+  const { experience } = c;
   const { education } = experience;
 
   return (

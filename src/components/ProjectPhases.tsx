@@ -1,4 +1,4 @@
-import type { ProjectPhase } from "@/data/portfolio";
+import type { ProjectPhase } from "@/data";
 
 /**
  * A quiet strip showing how a long-running project moved, and how the role

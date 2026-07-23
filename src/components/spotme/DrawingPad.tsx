@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { spotmeDemo } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { pointsToAttr } from "./SpotContent";
 
 /**
@@ -13,15 +13,16 @@ import { pointsToAttr } from "./SpotContent";
  * what keeps a finger-drawn stroke legible once it lands on the grid.
  */
 export function DrawingPad({
+  copy,
   colour,
   onCancel,
   onConfirm,
 }: {
+  copy: Content["spotmeDemo"]["grid"];
   colour: string;
   onCancel: () => void;
   onConfirm: (strokes: number[][]) => void;
 }) {
-  const copy = spotmeDemo.grid;
   const surface = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const drawing = useRef(false);

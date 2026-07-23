@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { spotmeDemo } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { SpotmeGrid } from "./SpotmeGrid";
 import { SpotmeGuide } from "./SpotmeGuide";
 
@@ -12,7 +12,8 @@ import { SpotmeGuide } from "./SpotmeGuide";
  * simulated users — opens on demand behind a button, so the case study stays
  * proportionate to the two projects below it.
  */
-export function SpotmeDemo() {
+export function SpotmeDemo({ c }: { c: Content }) {
+  const { spotmeDemo } = c;
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
@@ -75,7 +76,7 @@ export function SpotmeDemo() {
       </div>
 
       <div className="mt-8 grid items-stretch gap-5 lg:grid-cols-[1fr_auto]">
-        <SpotmeGuide />
+        <SpotmeGuide c={c} />
 
         <div className="flex flex-col justify-center rounded-2xl border border-dashed border-[var(--line-strong)] p-6 text-center lg:w-[16rem]">
           <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--subtle)]">
@@ -128,7 +129,7 @@ export function SpotmeDemo() {
             className="my-auto w-full max-w-md outline-none"
           >
             <div className="relative">
-              <SpotmeGrid />
+              <SpotmeGrid c={c} />
               <button
                 type="button"
                 onClick={close}

@@ -1,8 +1,9 @@
-import { skills } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { Reveal } from "./ui/Reveal";
 import { SectionHeading } from "./ui/SectionHeading";
 
-export function Skills() {
+export function Skills({ c }: { c: Content }) {
+  const { skills } = c;
   return (
     <section
       id="skills"

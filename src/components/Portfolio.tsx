@@ -7,19 +7,19 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { ProjectSection } from "@/components/ProjectSection";
 import { Skills } from "@/components/Skills";
-import { personal, site } from "@/data/portfolio";
+import { otherLocale, type Content } from "@/data";
 
 /** Structured data so search engines understand who the page is about. */
-function PersonJsonLd() {
+function PersonJsonLd({ c }: { c: Content }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: personal.name,
-    jobTitle: personal.title,
-    description: site.description,
-    email: `mailto:${personal.email}`,
-    url: site.url,
-    sameAs: [personal.linkedin],
+    name: c.personal.name,
+    jobTitle: c.personal.title,
+    description: c.site.description,
+    email: `mailto:${c.personal.email}`,
+    url: c.url,
+    sameAs: [c.personal.linkedin],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Paris",
@@ -30,27 +30,33 @@ function PersonJsonLd() {
   return (
     <script
       type="application/ld+json"
-      // Content is static and authored in src/data/portfolio.ts.
+      // Content is static and authored in src/data.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
 }
 
-export default function Page() {
+/**
+ * The whole page, in whichever language it is handed.
+ * `/` renders it in French, `/en` in English — same components, same layout.
+ */
+export function Portfolio({ c }: { c: Content }) {
+  const other = otherLocale(c.locale);
+
   return (
     <>
-      <PersonJsonLd />
-      <Header />
+      <PersonJsonLd c={c} />
+      <Header c={c} otherHref={other.href} />
       <main id="main">
-        <Hero />
-        <ProjectSection />
-        <About />
-        <Skills />
-        <Awareness />
-        <ExperienceTimeline />
-        <Contact />
+        <Hero c={c} />
+        <ProjectSection c={c} />
+        <About c={c} />
+        <Skills c={c} />
+        <Awareness c={c} />
+        <ExperienceTimeline c={c} />
+        <Contact c={c} />
       </main>
-      <Footer />
+      <Footer c={c} />
     </>
   );
 }

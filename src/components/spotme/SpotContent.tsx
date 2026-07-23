@@ -96,16 +96,30 @@ export function pointsToAttr(points: number[]): string {
   return pairs.join(" ");
 }
 
-/** Describes a spot for screen readers. */
-export function describeContent(content: SpotContent): string {
+/** Describes a spot for screen readers, in the visitor's language. */
+export type ContentNames = {
+  colour: string;
+  drawing: string;
+  word: string;
+  heart: string;
+  cross: string;
+  star: string;
+  smile: string;
+  bolt: string;
+};
+
+export function describeContent(
+  content: SpotContent,
+  names: ContentNames,
+): string {
   switch (content.kind) {
     case "text":
-      return `the word ${content.text}`;
+      return `${names.word} ${content.text}`;
     case "glyph":
-      return `a ${content.glyph}`;
+      return names[content.glyph];
     case "drawing":
-      return "a drawing";
+      return names.drawing;
     default:
-      return "a colour";
+      return names.colour;
   }
 }

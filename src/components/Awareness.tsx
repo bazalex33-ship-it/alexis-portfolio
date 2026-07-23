@@ -1,4 +1,4 @@
-import { awareness } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { Reveal } from "./ui/Reveal";
 
 /**
@@ -8,7 +8,8 @@ import { Reveal } from "./ui/Reveal";
  * sections on either side, and the areas listed as plain text rather than
  * tags. It should read as a note in the margin, not as a sixth chapter.
  */
-export function Awareness() {
+export function Awareness({ c }: { c: Content }) {
+  const { awareness } = c;
   return (
     <section
       id="awareness"

@@ -1,23 +1,18 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
-import { hero, personal, site } from "@/data/portfolio";
+import { getContent, shared, type Locale } from "@/data";
 
-/**
- * Social sharing image (LinkedIn, X, Slack…), generated from the data file.
- * Also reused as the Twitter card image via twitter-image.tsx.
- */
-export const alt = `${personal.name} — ${personal.title}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
  * The portrait must be inlined as a data URI: the image generator cannot fetch
- * files over the network at build time. Returns null if the file is missing,
- * so the card still renders (text only) instead of breaking the build.
+ * files over the network at build time. Returns null if the file is missing, so
+ * the card still renders (text only) instead of breaking the build.
  */
 async function loadPortrait(): Promise<string | null> {
-  const src = personal.photo.src.trim();
+  const src = shared.photoSrc.trim();
   if (!src) return null;
 
   try {
@@ -29,7 +24,9 @@ async function loadPortrait(): Promise<string | null> {
   }
 }
 
-export default async function OpenGraphImage() {
+/** One sharing image per language, built from that language's content. */
+export async function renderShareImage(locale: Locale) {
+  const c = getContent(locale);
   const portrait = await loadPortrait();
 
   return new ImageResponse(
@@ -74,7 +71,7 @@ export default async function OpenGraphImage() {
                   background: "#1f45c8",
                 }}
               />
-              {site.ogTagline}
+              {c.site.ogTagline}
             </div>
 
             <div
@@ -87,11 +84,14 @@ export default async function OpenGraphImage() {
                 maxWidth: portrait ? 640 : 900,
               }}
             >
-              {hero.headline}
+              {c.hero.headline}
             </div>
           </div>
 
           {portrait ? (
+            // next/image has no meaning here: this tree is rasterised into a
+            // PNG at build time, never rendered in a browser.
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={portrait}
               alt=""
@@ -119,14 +119,14 @@ export default async function OpenGraphImage() {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", fontSize: 36, color: "#14181f" }}>
-              {personal.name}
+              {c.personal.name}
             </div>
             <div style={{ display: "flex", fontSize: 26, color: "#5c6472" }}>
-              {personal.title}
+              {c.personal.title}
             </div>
           </div>
           <div style={{ display: "flex", fontSize: 24, color: "#1f45c8" }}>
-            {personal.availability}
+            {c.personal.availability}
           </div>
         </div>
       </div>

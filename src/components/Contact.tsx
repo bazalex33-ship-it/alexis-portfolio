@@ -1,9 +1,10 @@
-import { contact, personal } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { CopyEmail } from "./CopyEmail";
 import { ArrowIcon, ButtonLink } from "./ui/Button";
 import { Reveal } from "./ui/Reveal";
 
-export function Contact() {
+export function Contact({ c }: { c: Content }) {
+  const { contact, personal } = c;
   // The CV button only exists once a URL is set in src/data/portfolio.ts.
   const hasCv = personal.cvUrl.trim().length > 0;
 

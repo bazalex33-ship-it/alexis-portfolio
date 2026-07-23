@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { navigation, personal } from "@/data/portfolio";
+import Link from "next/link";
+import type { Content } from "@/data";
 import { ScrollProgress } from "./ScrollProgress";
 
-const sectionIds = navigation.map((item) => item.href.replace("#", ""));
-
 /** Sticky, discreet navigation with an active state driven by scroll position. */
-export function Header() {
+export function Header({ c, otherHref }: { c: Content; otherHref: string }) {
+  const { navigation, personal, languageSwitch, ui } = c;
+  const sectionIds = navigation.map((item) => item.href.replace("#", ""));
+
   const [active, setActive] = useState<string>(sectionIds[0] ?? "");
   const [condensed, setCondensed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,7 +48,8 @@ export function Header() {
       window.removeEventListener("resize", onScroll);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
 
   // Close the mobile menu with Escape.
   useEffect(() => {
@@ -65,7 +68,7 @@ export function Header() {
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[var(--foreground)] focus:px-5 focus:py-2.5 focus:text-sm focus:text-white"
       >
-        Skip to content
+        {ui.skipToContent}
       </a>
 
       <header
@@ -82,7 +85,7 @@ export function Header() {
           >
             {personal.name}
             <span className="ml-2 hidden text-[var(--subtle)] sm:inline">
-              — {personal.title}
+              · {personal.title}
             </span>
           </a>
 
@@ -116,12 +119,19 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-2 md:flex">
+            <Link
+              href={otherHref}
+              aria-label={languageSwitch.label}
+              className="rounded-full border border-[var(--line-strong)] px-3 py-2 text-xs font-medium text-[var(--muted)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              {languageSwitch.short}
+            </Link>
             <a
               href="#contact"
               className="group inline-flex items-center gap-2 rounded-full border border-[var(--line-strong)] px-4 py-2 text-sm text-[var(--foreground)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
             >
-              Get in touch
+              {ui.getInTouch}
             </a>
           </div>
 
@@ -133,7 +143,7 @@ export function Header() {
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--line-strong)] text-[var(--foreground)] md:hidden"
           >
             <span className="sr-only">
-              {menuOpen ? "Close menu" : "Open menu"}
+              {menuOpen ? ui.closeMenu : ui.openMenu}
             </span>
             <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
               {menuOpen ? (
@@ -177,6 +187,15 @@ export function Header() {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link
+                  href={otherHref}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-3.5 text-base text-[var(--muted)]"
+                >
+                  {languageSwitch.label}
+                </Link>
+              </li>
             </ul>
           </nav>
         ) : null}

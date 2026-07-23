@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { about, personal } from "@/data/portfolio";
+import type { Content } from "@/data";
 import { Reveal } from "./ui/Reveal";
 
-export function About() {
+export function About({ c }: { c: Content }) {
+  const { about, personal } = c;
   // The portrait disappears cleanly if `personal.photo.src` is emptied.
   const hasPhoto = personal.photo.src.trim().length > 0;
 

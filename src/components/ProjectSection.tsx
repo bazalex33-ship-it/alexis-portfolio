@@ -1,5 +1,4 @@
-import type { Project } from "@/data/portfolio";
-import { projects, work } from "@/data/portfolio";
+import type { Content, Project } from "@/data";
 import { ProjectImage } from "./ProjectImage";
 import { ProjectPhases } from "./ProjectPhases";
 import { SpotmeDemo } from "./spotme/SpotmeDemo";
@@ -88,9 +87,11 @@ const EDITORIAL = "border-t border-[var(--line)] pt-10";
 function FeaturedProject({
   project,
   variant,
+  c,
 }: {
   project: Project;
   variant: ProjectVariant;
+  c: Content;
 }) {
   return (
     <article
@@ -133,7 +134,7 @@ function FeaturedProject({
       {project.demo === "spotme" ? (
         <Reveal delay={180}>
           <div className="mt-10">
-            <SpotmeDemo />
+            <SpotmeDemo c={c} />
           </div>
         </Reveal>
       ) : project.images.length > 0 ? (
@@ -251,11 +252,14 @@ function CompactProject({
 }
 
 export function ProjectSection({
+  c,
   variant = "cards",
 }: {
+  c: Content;
   variant?: ProjectVariant;
 }) {
-  const [featured, ...rest] = projects;
+  const { work } = c;
+  const [featured, ...rest] = c.projects;
 
   return (
     <section
@@ -273,7 +277,7 @@ export function ProjectSection({
 
         <div className="mt-16 space-y-16 lg:mt-20">
           {featured ? (
-            <FeaturedProject project={featured} variant={variant} />
+            <FeaturedProject project={featured} variant={variant} c={c} />
           ) : null}
           {rest.map((project) => (
             <CompactProject key={project.id} project={project} variant={variant} />

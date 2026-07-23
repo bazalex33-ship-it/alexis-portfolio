@@ -28,21 +28,29 @@ npm run lint    # check code quality
 
 ## 2. Update the text
 
-**Everything you can read on the site lives in one file:**
+The site exists in **two languages**: French at `/` and English at `/en`.
 
-```
-src/data/portfolio.ts
-```
+| File | What it holds |
+| ---- | ------------- |
+| `src/data/fr.ts` | Every French string |
+| `src/data/en.ts` | Every English string |
+| `src/data/shared.ts` | Email, LinkedIn, CV link, photo, site URL — identical in both |
 
-Open it, change the text between the quotes, save. That's it — you never need to
-open a component to change wording.
+Open the file for the language you want, change the text between the quotes,
+save. You never need to open a component to change wording.
 
-The file is organised in clearly named blocks:
+**Change a text in one language, change it in the other too.** The two files
+share the same structure, and TypeScript enforces it: if you add a field to one
+and forget the other, `npm run build` fails and tells you exactly what is
+missing. That is deliberate — it is what stops the two versions from drifting
+apart.
+
+Each language file is organised in clearly named blocks:
 
 | Block        | What it controls                                             |
 | ------------ | ------------------------------------------------------------ |
-| `site`       | Page title, meta description, site URL, social sharing text   |
-| `personal`   | Name, job title, location, email, LinkedIn, CV link           |
+| `site`       | Page title, meta description, social sharing text             |
+| `personal`   | Job title, location, availability, photo alt text             |
 | `navigation` | The links in the sticky menu                                  |
 | `hero`       | Everything at the top of the page (headline, buttons, badge)  |
 | `work`       | Title and intro of the "Selected Work" section                |
@@ -51,7 +59,9 @@ The file is organised in clearly named blocks:
 | `skills`     | The three skill categories and their items                    |
 | `experience` | The timeline entries and the education block                  |
 | `contact`    | Closing section (title, text, button labels)                  |
+| `awareness`  | The short "Business & Market Awareness" band                   |
 | `footer`     | Footer sentence                                               |
+| `ui`         | Buttons and labels not tied to a section                      |
 
 **Tips**
 
@@ -61,15 +71,23 @@ The file is organised in clearly named blocks:
   giving it a unique `id`. The **first project in the list is automatically
   displayed as the large, featured case study**; the others use the compact layout.
 - Changing the order of the timeline = moving the blocks up or down.
-- Navigation links must match the section ids (`#work`, `#about`, `#skills`,
-  `#experience`, `#contact`). If you rename one, rename the section id too.
+- Navigation labels can be translated freely, but the `href` values
+  (`#work`, `#about`, `#skills`, `#experience`, `#contact`) must stay the same
+  in both languages — they point at section ids in the markup.
+- Project `id` values must also match across languages.
+
+### Changing the default language
+
+French is the default and sits at `/`. To swap the two, edit `defaultLocale` in
+`src/data/shared.ts`, then move the pages: `src/app/(fr)` serves `/` and
+`src/app/(en)/en` serves `/en`.
 
 ---
 
 ## 3. Replace the project images
 
 Project images live in `public/projects/` and are referenced from
-`src/data/portfolio.ts`.
+the language files.
 
 1. Export your image as **WebP** (JPG/PNG also work), ideally in a **portrait 3:4
    ratio**, around **1200 px wide**, under ~300 KB.
@@ -87,6 +105,9 @@ Project images live in `public/projects/` and are referenced from
    ]
    ```
 
+   The `src` path is the same in both languages; only `alt` and `caption`
+   get translated.
+
 **If a file is missing, nothing breaks.** A clean placeholder is displayed
 instead of a broken image, so the site can go live before the visuals are ready.
 
@@ -99,7 +120,7 @@ above. To remove all images from a project, set `images: []`.
 
 ## 4. Add the CV link
 
-In `src/data/portfolio.ts`, find:
+In `src/data/shared.ts`, find:
 
 ```ts
 cvUrl: "",
@@ -128,10 +149,10 @@ The button reappears in the Contact section and in the footer. An external link
 2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
 3. Vercel detects Next.js automatically — **keep every default setting** and click
    **Deploy**. No environment variables are needed.
-4. After the first deployment, copy the final URL into `src/data/portfolio.ts`:
+4. After the first deployment, copy the final URL into `src/data/shared.ts`:
 
    ```ts
-   export const site = {
+   export const shared = {
      url: "https://your-domain.com",
      // ...
    };
@@ -171,12 +192,17 @@ timeline markers and the scroll progress bar. If you pick a lighter blue, adjust
 ```
 src/
 ├─ app/
-│  ├─ layout.tsx            # fonts, metadata, Open Graph, Twitter card
-│  ├─ page.tsx              # the single page: assembles all sections
+│  ├─ (fr)/                 # French site, served at /
+│  │  ├─ layout.tsx         # fonts + <html lang="fr">
+│  │  ├─ page.tsx
+│  │  └─ opengraph-image.tsx
+│  ├─ (en)/en/              # English site, served at /en
+│  │  ├─ page.tsx
+│  │  └─ opengraph-image.tsx
+│  ├─ (en)/layout.tsx       # fonts + <html lang="en">
+│  ├─ metadata.ts           # title, description, Open Graph, hreflang
 │  ├─ globals.css           # theme variables, base styles, animations
 │  ├─ icon.tsx              # generated favicon placeholder
-│  ├─ opengraph-image.tsx   # generated social sharing image
-│  ├─ twitter-image.tsx
 │  ├─ robots.ts
 │  └─ sitemap.ts
 ├─ components/
@@ -191,9 +217,16 @@ src/
 │  ├─ CopyEmail.tsx         # copy-to-clipboard button
 │  ├─ Footer.tsx
 │  ├─ ScrollProgress.tsx
+│  ├─ Portfolio.tsx         # assembles every section, in either language
+│  ├─ og.tsx                # the generated sharing image
+│  ├─ spotme/               # the interactive demo
 │  └─ ui/                   # Button, Reveal (scroll animation), SectionHeading
 └─ data/
-   └─ portfolio.ts          # ← ALL CONTENT LIVES HERE
+   ├─ fr.ts                 # ← FRENCH CONTENT
+   ├─ en.ts                 # ← ENGLISH CONTENT
+   ├─ shared.ts             # ← email, links, photo, site URL
+   ├─ types.ts              # the shape both languages must follow
+   └─ index.ts              # getContent(locale)
 public/
 └─ projects/                # project images
 ```
@@ -201,6 +234,8 @@ public/
 ## Accessibility & performance notes
 
 - Semantic HTML, one `h1`, correct heading order, skip-to-content link.
+- `<html lang>`, `og:locale` and `hreflang` are correct on both languages, so
+  search engines treat them as one page in two languages rather than duplicates.
 - Full keyboard navigation with visible focus rings.
 - All animations respect the `prefers-reduced-motion` system setting.
 - The page is fully pre-rendered at build time; only the sticky nav, the scroll
