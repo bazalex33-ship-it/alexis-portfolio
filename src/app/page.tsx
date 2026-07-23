@@ -1,4 +1,5 @@
 import { About } from "@/components/About";
+import { Awareness } from "@/components/Awareness";
 import { Contact } from "@/components/Contact";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { Footer } from "@/components/Footer";
@@ -45,6 +46,7 @@ export default function Page() {
         <ProjectSection />
         <About />
         <Skills />
+        <Awareness />
         <ExperienceTimeline />
         <Contact />
       </main>

@@ -1,6 +1,7 @@
 import type { Project } from "@/data/portfolio";
 import { projects, work } from "@/data/portfolio";
 import { ProjectImage } from "./ProjectImage";
+import { ProjectPhases } from "./ProjectPhases";
 import { SpotmeDemo } from "./spotme/SpotmeDemo";
 import { Reveal } from "./ui/Reveal";
 import { SectionHeading } from "./ui/SectionHeading";
@@ -238,6 +239,13 @@ function CompactProject({
           ) : null}
         </div>
       </div>
+
+      {/* Full width: the strip needs the whole card to breathe. */}
+      {project.phases && project.phasesLabel ? (
+        <div className="mt-10 border-t border-[var(--line)] pt-8">
+          <ProjectPhases label={project.phasesLabel} phases={project.phases} />
+        </div>
+      ) : null}
     </Reveal>
   );
 }

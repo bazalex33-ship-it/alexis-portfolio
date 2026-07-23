@@ -1,37 +1,7 @@
 import { hero, personal } from "@/data/portfolio";
+import { HeroBackdrop } from "./HeroBackdrop";
 import { ArrowIcon, ButtonLink } from "./ui/Button";
 import { Reveal } from "./ui/Reveal";
-
-/** Discreet abstract background: a light grid, a soft blue wash, two hairlines. */
-function HeroBackdrop() {
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    >
-      <div
-        className="absolute inset-0 opacity-[0.5]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--line) 1px, transparent 1px), linear-gradient(to bottom, var(--line) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          maskImage:
-            "radial-gradient(80% 60% at 50% 30%, #000 0%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(80% 60% at 50% 30%, #000 0%, transparent 100%)",
-        }}
-      />
-      <div
-        className="hero-aurora absolute -top-40 left-1/2 h-[42rem] w-[52rem] -translate-x-1/2 rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(31,69,200,0.13), rgba(31,69,200,0.03) 60%, transparent 100%)",
-        }}
-      />
-      <div className="absolute inset-x-0 top-1/3 h-px bg-gradient-to-r from-transparent via-[var(--line)] to-transparent" />
-    </div>
-  );
-}
 
 export function Hero() {
   return (

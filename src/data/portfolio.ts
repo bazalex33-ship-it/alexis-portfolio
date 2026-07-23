@@ -32,6 +32,16 @@ export type ProjectImage = {
   caption?: string;
 };
 
+export type ProjectPhase = {
+  /** Two or three words. Kept generic — no names, dates or figures. */
+  label: string;
+  /** How the role shifted during that phase. */
+  role: string;
+  /** One short line. */
+  description: string;
+  status: "done" | "current" | "ahead";
+};
+
 export type Project = {
   /** Used for the anchor id and React keys. */
   id: string;
@@ -50,6 +60,12 @@ export type Project = {
   tagsLabel: string;
   tags: string[];
   images: ProjectImage[];
+  /**
+   * Optional strip showing how a long-running project — and the role within
+   * it — evolved over time. Omit it and nothing is rendered.
+   */
+  phasesLabel?: string;
+  phases?: ProjectPhase[];
   /**
    * Renders the interactive SpotMe demo in place of the image slots.
    * Remove this line and fill `images` to show screenshots instead.
@@ -210,6 +226,51 @@ export const projects: Project[] = [
       "International collaboration",
     ],
     images: [],
+    /**
+     * Shows how far the project moved and how the role moved with it.
+     * Wording is deliberately generic: no concept name, no individuals, no
+     * figures, no financing structures — the shape of the progression is the
+     * point, not its details.
+     */
+    phasesLabel: "How the project evolved",
+    phases: [
+      {
+        label: "Wellness concept",
+        role: "Marketing & concept",
+        description: "Positioning, guest experience and service design.",
+        status: "done",
+      },
+      {
+        label: "Destination strategy",
+        role: "Strategy",
+        description: "A broader premium offer built around recovery and nutrition.",
+        status: "done",
+      },
+      {
+        label: "Asset repositioning",
+        role: "Coordination",
+        description: "Scope widened to renovation, brand and operator search.",
+        status: "done",
+      },
+      {
+        label: "Funding options",
+        role: "Structuring",
+        description: "Organising project information and materials for discussions.",
+        status: "done",
+      },
+      {
+        label: "Partner introductions",
+        role: "Business development",
+        description: "Connecting investors, operators and hospitality brands.",
+        status: "current",
+      },
+      {
+        label: "What comes next",
+        role: "Not yet defined",
+        description: "Longer-term involvement remains open as the project advances.",
+        status: "ahead",
+      },
+    ],
     note: "The project and property names are not publicly disclosed while the development process is ongoing.",
   },
   {
@@ -413,6 +474,24 @@ export const skills = {
         "Vercel",
       ],
     },
+  ],
+};
+
+/**
+ * A short band between Skills and Experience. Deliberately lighter than the
+ * sections around it: no cards, no figures, no charts — it signals perspective,
+ * not financial expertise.
+ */
+export const awareness = {
+  eyebrow: "Perspective",
+  title: "Business & Market Awareness",
+  text: "I maintain an active interest in financial markets, business models and major geopolitical developments. This broader perspective helps me assess budgets, understand economic constraints, anticipate external risks and make more informed decisions when developing projects.",
+  areas: [
+    "Financial literacy",
+    "Budget awareness",
+    "Market analysis",
+    "Geopolitical monitoring",
+    "Business model understanding",
   ],
 };
 
