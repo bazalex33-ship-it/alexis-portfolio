@@ -91,8 +91,18 @@ export const site = {
   /** Used for absolute Open Graph URLs. Update after your first deploy. */
   url: "https://alexis-portfolio-sand.vercel.app",
   title: "Alexis Bazire — Product, Digital Projects & AI",
+  /**
+   * Search-engine description. Google truncates around 155 characters, so keep
+   * it under that — the important words first.
+   */
   description:
-    "Alexis Bazire combines product thinking, project coordination, marketing and artificial intelligence to design, structure and develop practical solutions. Open to opportunities in Paris.",
+    "Alexis Bazire — product thinking, project coordination and AI to design, structure and ship practical projects. Open to opportunities in Paris.",
+  /**
+   * Shown on LinkedIn, X and Slack previews, which cut around 125 characters.
+   * Shorter than the one above on purpose.
+   */
+  shareDescription:
+    "Turning ideas into concrete projects — product, digital projects and AI. Open to opportunities in Paris.",
   /** Shown on the generated social sharing image. */
   ogTagline: "Product · Digital Projects · Marketing · AI",
   locale: "en_US",
